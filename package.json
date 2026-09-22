@@ -1,0 +1,17 @@
+{
+  "name": "our-little-universe",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "gift": "node scripts/package-gift.mjs",
+    "preview": "node scripts/serve.mjs dist",
+    "test": "node --test --test-timeout=90000 --test-concurrency=1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}
