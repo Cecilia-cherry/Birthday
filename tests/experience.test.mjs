@@ -34,7 +34,7 @@ async function explore(page) {
   await page.getByRole('button', { name: '直接探索星球' }).click();
 }
 
-test('birthday journey: opening, particle cake, eight planets, letter, replay and music state', async () => {
+test('birthday journey: opening, particle cake, nine planets, letter, replay and music state', async () => {
   const { page, context, errors } = await start();
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `${artifacts}/desktop-opening.png`, fullPage: true });
@@ -97,8 +97,8 @@ test('birthday journey: opening, particle cake, eight planets, letter, replay an
   assert.equal(await page.locator('.header .brand > span').evaluate(el => getComputedStyle(el).display), 'none');
   assert.equal(await page.locator('.footer').evaluate(el => getComputedStyle(el).display), 'none');
   assert.equal(await page.locator('.journey-bar p').evaluate(el => getComputedStyle(el).display), 'none', 'third-screen prose is visually removed');
-  assert.equal(await page.locator('.universe-memory-preview').count(), 8, 'each planet has a paired photo preview');
-  assert.equal(await page.locator('.planet-stop').count(), 8, 'the requested eight city planets are present');
+  assert.equal(await page.locator('.universe-memory-preview').count(), 9, 'each planet has a paired photo preview');
+  assert.equal(await page.locator('.planet-stop').count(), 9, 'the requested nine city planets are present');
   assert.equal(await page.locator('.universe').getAttribute('data-planet-spacing'), 'desktop-380-mobile-320');
   assert.equal(await page.locator('.universe').getAttribute('data-pointer-scale-range'), '1.00');
   assert.equal(await page.locator('.universe').getAttribute('data-camera-scale-range'), '0.32-1.55');
@@ -191,11 +191,13 @@ test('birthday journey: opening, particle cake, eight planets, letter, replay an
   await page.getByRole('button', { name: '返回我们的宇宙' }).click();
   await page.getByRole('button', { name: '显示厦门星球' }).click();
   await page.waitForTimeout(2200);
-  for (const city of ['厦门', '中山', '珠海', '上海', '嘉兴', '漳州', '福州', '泉州']) {
+  const expectedPhotoCounts = { '厦门': 7, '中山': 5, '珠海': 4, '湖州': 6, '上海': 9, '嘉兴': 5, '漳州': 5, '福州': 5, '泉州': 6 };
+  for (const city of ['厦门', '中山', '珠海', '湖州', '上海', '嘉兴', '漳州', '福州', '泉州']) {
     await page.getByRole('button', { name: `显示${city}星球` }).click();
     await page.waitForTimeout(750);
     await page.getByRole('button', { name: new RegExp(`探索${city}，`) }).click();
     assert.equal(await page.locator('.memory-info h2').textContent(), city);
+    assert.equal(await page.locator('.photo-dots button').count(), expectedPhotoCounts[city], `${city} exposes every saved browser photo`);
     if (city === '厦门') {
       assert.equal(await page.locator('.memory-date').textContent(), '2022年11月');
       assert.equal(await page.locator('.memory-info h3').textContent(), '第一次一起看海');
@@ -203,7 +205,7 @@ test('birthday journey: opening, particle cake, eight planets, letter, replay an
     }
     await page.keyboard.press('Escape');
   }
-  assert.equal(await page.locator('.planet-stop.visited').count(), 8);
+  assert.equal(await page.locator('.planet-stop.visited').count(), 9);
   await page.getByRole('button', { name: '重播开场动画' }).click();
   await page.getByRole('button', { name: /跳过序章/ }).click();
   await page.getByRole('button', { name: '进入我们的世界', exact: true }).click();
@@ -303,7 +305,7 @@ test('mobile: no horizontal overflow, touch cake, swipe photos and accessible di
   });
   assert.match(await page.locator('.photo-counter').textContent(), /02.*02/);
   await page.keyboard.press('Escape');
-  for (const city of ['中山', '珠海', '上海', '嘉兴', '漳州', '福州']) {
+  for (const city of ['中山', '珠海', '湖州', '上海', '嘉兴', '漳州', '福州']) {
     await page.getByRole('button', { name: `显示${city}星球` }).tap();
     await page.waitForTimeout(100);
     await page.getByRole('button', { name: new RegExp(`探索${city}，`) }).tap();

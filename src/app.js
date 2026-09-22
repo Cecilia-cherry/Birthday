@@ -177,11 +177,11 @@ function bindUniverseExplorer() {
     const width = stage.clientWidth || innerWidth, mobile = width < 620;
     const height = stage.clientHeight || innerHeight;
     const worldX = mobile
-      ? [-.16, .17, -.14, .18, -.17, .14, -.12, .16]
-      : [-.23, .21, -.19, .24, -.22, .18, -.16, .22];
+      ? [-.16, .17, -.14, .18, -.17, .14, -.12, .16, -.15]
+      : [-.23, .21, -.19, .24, -.22, .18, -.16, .22, -.2];
     const worldY = mobile
-      ? [.2, .08, .26, .12, .23, .06, .17, .28]
-      : [.22, .07, .28, .14, .24, .08, .18, .3];
+      ? [.2, .08, .26, .12, .23, .06, .17, .28, .1]
+      : [.22, .07, .28, .14, .24, .08, .18, .3, .1];
     const zSpacing = mobile ? 320 : 380;
     updateActive(Math.max(0, Math.min(places.length - 1, Math.round(value))));
     root.dataset.universeProgress = value.toFixed(3);
